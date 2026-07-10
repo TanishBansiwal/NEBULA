@@ -1,0 +1,36 @@
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: nebula-postgres
+
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: nebula
+      POSTGRES_PASSWORD: nebula
+      POSTGRES_DB: nebula
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:8
+
+    container_name: nebula-redis
+
+    restart: unless-stopped
+
+    ports:
+      - "6379:6379"
+
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+
+  redis_data:
