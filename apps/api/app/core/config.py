@@ -2,11 +2,13 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    APP_NAME: str = "Nebula API"
-    APP_VERSION: str = "0.1.0"
+    DATABASE_URL: str = "postgresql+psycopg://nebula:nebula@localhost:5432/nebula"
 
-    DATABASE_URL: str
-    REDIS_URL: str
+    SECRET_KEY: str = "CHANGE_THIS_TO_A_LONG_RANDOM_SECRET_IN_PRODUCTION"
+
+    ALGORITHM: str = "HS256"
+
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
     model_config = SettingsConfigDict(
         env_file=".env",
