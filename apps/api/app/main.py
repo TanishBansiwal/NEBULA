@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from app.routers import auth
 from app.routers import users
+from app.routers import conversations
+from app.routers import messages
 
 
 
@@ -21,6 +23,9 @@ app.include_router(
     prefix="/users",
     tags=["Users"],
 )
+
+app.include_router(conversations.router)
+app.include_router(messages.router)
 
 @app.get("/")
 def root():
