@@ -3,6 +3,7 @@ from app.routers import auth
 from app.routers import users
 from app.routers import conversations
 from app.routers import messages
+from app.routers import chat
 
 
 
@@ -26,6 +27,7 @@ app.include_router(
 
 app.include_router(conversations.router)
 app.include_router(messages.router)
+app.include_router(chat.router)
 
 @app.get("/")
 def root():
