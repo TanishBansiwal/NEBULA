@@ -32,3 +32,16 @@ def get_messages(
         .order_by(Message.created_at.asc())
         .all()
     )
+
+def get_message_history(
+    db: Session,
+    conversation_id: int,
+):
+    return (
+        db.query(Message)
+        .filter(
+            Message.conversation_id == conversation_id
+        )
+        .order_by(Message.created_at.asc())
+        .all()
+    )

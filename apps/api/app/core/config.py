@@ -2,17 +2,22 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    DATABASE_URL: str = "postgresql+psycopg://nebula:nebula@localhost:5432/nebula"
+    DATABASE_URL: str
 
-    SECRET_KEY: str = "CHANGE_THIS_TO_A_LONG_RANDOM_SECRET_IN_PRODUCTION"
+    SECRET_KEY: str
+    ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
 
-    ALGORITHM: str = "HS256"
+    GROQ_API_KEY: str
+    GROQ_MODEL: str
 
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    REDIS_URL: str
+
+    APP_NAME: str
+    APP_VERSION: str
 
     model_config = SettingsConfigDict(
         env_file=".env",
-        extra="ignore",
     )
 
 
