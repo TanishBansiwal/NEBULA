@@ -3,11 +3,14 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from app.schemas.user import UserLogin
+# from app.schemas.user import UserLogin
+from app.schemas.token import RefreshRequest
+
 from app.services.user_service import authenticate_user
 from app.auth.jwt import (
     create_access_token,
     create_refresh_token,
+    verify_refresh_token,
 )
 
 from app.core.database import get_db
@@ -76,5 +79,28 @@ def login(
     return {
         "access_token": access_token,
         "refresh_token": refresh_token,
+        "token_type": "bearer",
+    }
+
+@router.post("/refresh")
+def refresh_token(data: RefreshRequest):
+    payload = verify_refresh_token(
+        data.refresh_token
+    )
+
+    if payload is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid refresh token",
+        )
+
+    access_token = create_access_token(
+        {
+            "sub": payload["sub"],
+        }
+    )
+
+    return {
+        "access_token": access_token,
         "token_type": "bearer",
     }
