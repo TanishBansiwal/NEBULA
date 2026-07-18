@@ -35,3 +35,8 @@ class Conversation(Base):
         back_populates="conversation",
         cascade="all, delete",
     )
+    documents = relationship(
+    "Document",
+    back_populates="conversation",
+    cascade="all, delete",
+     )

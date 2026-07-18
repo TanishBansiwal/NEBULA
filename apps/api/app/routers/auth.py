@@ -5,7 +5,10 @@ from sqlalchemy.orm import Session
 
 from app.schemas.user import UserLogin
 from app.services.user_service import authenticate_user
-from app.auth.jwt import create_access_token
+from app.auth.jwt import (
+    create_access_token,
+    create_refresh_token,
+)
 
 from app.core.database import get_db
 from app.schemas.user import UserCreate
@@ -61,11 +64,17 @@ def login(
             detail="Invalid email or password",
         )
 
+
     access_token = create_access_token(
-        {"sub": user.email}
+    {"sub": str(user.id)}
+    )
+
+    refresh_token = create_refresh_token(
+        {"sub": str(user.id)}
     )
 
     return {
         "access_token": access_token,
+        "refresh_token": refresh_token,
         "token_type": "bearer",
     }

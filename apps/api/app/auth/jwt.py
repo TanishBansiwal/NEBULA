@@ -18,8 +18,7 @@ def create_access_token(data: dict) -> str:
         to_encode,
         settings.SECRET_KEY,
         algorithm=settings.ALGORITHM,
-    )
-
+    ) 
 
 def verify_access_token(token: str):
     try:
@@ -32,3 +31,31 @@ def verify_access_token(token: str):
 
     except JWTError:
         return None
+    
+def create_refresh_token(data: dict) -> str:
+    to_encode = data.copy()
+
+    expire = datetime.now(UTC) + timedelta(
+        days=30
+    )
+
+    to_encode.update({"exp": expire})
+
+    return jwt.encode(
+        to_encode,
+        settings.SECRET_KEY,
+        algorithm=settings.ALGORITHM,
+    )
+
+
+def verify_refresh_token(token: str):
+    try:
+        payload = jwt.decode(
+            token,
+            settings.SECRET_KEY,
+            algorithms=[settings.ALGORITHM],
+        )
+        return payload
+
+    except JWTError:
+        return None    
